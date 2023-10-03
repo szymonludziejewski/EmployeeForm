@@ -2,6 +2,11 @@
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
+	import { jsPDF } from "jspdf";
+	
+	const doc = new jsPDF();
+	doc.text('TRY library', 10, 10);
+	doc.save('try.pdf');
 </script>
 
 <header>
