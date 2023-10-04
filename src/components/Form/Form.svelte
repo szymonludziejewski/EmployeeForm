@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { user } from "../../store/app-state";
+	import { readFile } from "../../utils/file-reader";
+  	import { generatePDF } from "../../utils/pdf-generator";
 	
-	const readFile = (event: Event) => {
-		const FR = new FileReader();
-		const input: HTMLInputElement = event.target as HTMLInputElement;
-		const fileList: FileList = input.files as FileList;
-		FR.addEventListener("load", (evt) => {
+	const readFileAndSaveToStore = async (event: Event) => {
+		$user.photo = await readFile(event);
+	}
 
-			$user.photo = evt.target?.result;
-		})
-		FR.readAsDataURL(fileList[0]);
+	const savePDF = () => {
+		generatePDF($user).save("try.pdf")
 	}
 </script>
 
@@ -34,11 +33,11 @@
 
 	<label>
 		Zdjęcie
-		<input type="file" accept="image/*" on:change={readFile}><br>
+		<input type="file" accept="image/*" on:change={readFileAndSaveToStore}><br>
 	</label>
 	<br>
 
-	<input type="submit" value="Submit">
+	<button on:click={savePDF}>Save as PDF</button>
 </form>
 
 <p>{JSON.stringify($user)}</p>
